@@ -1,13 +1,25 @@
-import { useState } from 'react'
-import FileUpload from './components'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import FileUpload from './components/FileUpload';
+import AnalysisView from './components/AnalysisView';
+import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 
-function App() {
+export default function App() {
   return (
-    <>
-      <FileUpload></FileUpload>
-    </>
-  )
+    <Router>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            PBIX Analyzer
+          </Typography>
+          <Button color="inherit" component={Link} to="/">Upload</Button>
+          <Button color="inherit" component={Link} to="/analysis">Analysis</Button>
+        </Toolbar>
+      </AppBar>
+      <Routes>
+        <Route path="/" element={<FileUpload />} />
+        <Route path="/analysis" element={<AnalysisView />} />
+      </Routes>
+    </Router>
+  );
 }
-
-export default App
