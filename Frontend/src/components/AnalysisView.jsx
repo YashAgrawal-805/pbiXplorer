@@ -90,7 +90,7 @@ export default function AnalysisView() {
           <FormControlLabel
             control={<Switch checked={darkMode} onChange={() => setDarkMode(!darkMode)} />}
             label="Dark Mode"
-            sx={{ position: 'fixed', bottom: 20, right: 20, zIndex: 1000 }}
+            sx={{ position: 'fixed', bottom: 10, right: 20, zIndex: 1000 }}
           />
           <Typography variant="h6">⛔ No data found. Please upload a PBIX file.</Typography>
         </Box>
@@ -191,14 +191,20 @@ export default function AnalysisView() {
                 📈 Most Used Columns: Hover to find the Column and its Count
               </Typography>
               <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={mostUsed} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" />
-                  <YAxis dataKey="col" tick={false} type="category" />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="#1976d2" />
-                </BarChart>
-              </ResponsiveContainer>
+  <BarChart data={mostUsed} layout="vertical">
+    <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? '#888' : '#ccc'} />
+    <XAxis type="number" stroke={darkMode ? '#fff' : '#000'} />
+    <YAxis dataKey="col" tick={false} type="category" stroke={darkMode ? '#fff' : '#000'} />
+    <Tooltip
+      contentStyle={{
+        backgroundColor: darkMode ? '#333' : '#fff',
+        color: darkMode ? '#fff' : '#000',
+      }}
+    />
+    <Bar dataKey="count" fill="#1976d2" />
+  </BarChart>
+</ResponsiveContainer>
+
             </Paper>
           </Grid>
 
@@ -208,14 +214,20 @@ export default function AnalysisView() {
                 📉 Least Used Columns: Hover to find the Column and its Count
               </Typography>
               <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={leastUsed} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" />
-                  <YAxis dataKey="col" tick={false} type="category" />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="#d32f2f" />
-                </BarChart>
-              </ResponsiveContainer>
+  <BarChart data={leastUsed} layout="vertical">
+    <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? '#888' : '#ccc'} />
+    <XAxis type="number" stroke={darkMode ? '#fff' : '#000'} />
+    <YAxis dataKey="col" tick={false} type="category" stroke={darkMode ? '#fff' : '#000'} />
+    <Tooltip
+      contentStyle={{
+        backgroundColor: darkMode ? '#333' : '#fff',
+        color: darkMode ? '#fff' : '#000',
+      }}
+    />
+    <Bar dataKey="count" fill="#d32f2f" />
+  </BarChart>
+</ResponsiveContainer>
+
             </Paper>
           </Grid>
         </Grid>
