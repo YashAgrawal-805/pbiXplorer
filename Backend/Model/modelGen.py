@@ -1,8 +1,11 @@
 from google import genai
 import json
+from dotenv import load_dotenv
+import os
 
-client = genai.Client(api_key="AIzaSyCPg_1DVkfpX6QLcVaoFJENOQyF3zRlKEQ")
-
+load_dotenv()
+api_key = os.getenv("API_KEY")
+client = genai.Client(api_key=api_key)
 def process_json_data(json_data):
     """
     Function to process JSON data using the Google GenAI API.
