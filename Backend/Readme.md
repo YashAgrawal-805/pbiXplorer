@@ -10,3 +10,5 @@ google-genai: A library for interacting with Google's GenAI API. Install it usin
     pip install -q -U google-genai
 zipfile: A built-in Python module for working with ZIP archives, used for extracting .pbix files.
 io: A built-in Python module for handling in-memory file operations.
+
+pip install python-dotenv
