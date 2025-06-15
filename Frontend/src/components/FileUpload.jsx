@@ -119,7 +119,7 @@ export default function FileUpload() {
           }}
         >
           <CardContent>
-            <Typography variant="h4" gutterBottom fontWeight="bold">
+            <Typography variant="h4"  gutterBottom fontWeight="bold">
               🔍 PBIX Analyzer
             </Typography>
 

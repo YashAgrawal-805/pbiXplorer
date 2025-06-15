@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import FileUpload from './components/FileUpload';
 import AnalysisView from './components/AnalysisView';
+import LayoutPage from './components/LayoutPage'; // ⬅️ Import the layout viewer
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<FileUpload />} />
         <Route path="/analysis" element={<AnalysisView />} />
+        <Route path="/layout/:pageIndex" element={<LayoutPage />} /> {/* ⬅️ New Route */}
       </Routes>
     </Router>
   );
