@@ -16,6 +16,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+
 export default function FileUpload() {
   const [file, setFile] = useState(null);
   const [responseMessage, setResponseMessage] = useState('');
@@ -119,7 +120,7 @@ export default function FileUpload() {
           }}
         >
           <CardContent>
-            <Typography variant="h4"  gutterBottom fontWeight="bold">
+            <Typography variant="h4" color="primary" gutterBottom fontWeight="bold">
               🔍 PBIX Analyzer
             </Typography>
 

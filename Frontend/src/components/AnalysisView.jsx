@@ -11,6 +11,8 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
+const cleanVisualType = (name) => name.replace(/[A-Z0-9]{8,}$/, '').trim();
+
 const ChartCard = ({ title, data, color, darkMode }) => (
   <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
     <Typography variant="h6" gutterBottom>{title}</Typography>
@@ -42,9 +44,7 @@ export default function AnalysisView() {
 
   useEffect(() => {
     const data = localStorage.getItem('report_metadata');
-    if (data) {
-      setMetadata(JSON.parse(data));
-    }
+    if (data) setMetadata(JSON.parse(data));
   }, []);
 
   useEffect(() => {
@@ -102,47 +102,13 @@ export default function AnalysisView() {
   }, {});
 
   const suggestionsContent = metadata.suggestions.split('\n').map((line, index) => {
-    if (line.startsWith('**') && line.endsWith('**')) {
-      // Render main heading
-      return (
-        <Typography
-          key={index}
-          variant="h6"
-          fontWeight="bold"
-          sx={{ mt: 2 }}
-        >
-          {line.replace(/\*\*/g, '')}
-        </Typography>
-      );
-    } else if (line.trim().startsWith('*')) {
-      // Render subheading (bold and underlined)
-      
-      return (
-        <>
-          <Typography
-            key={index}
-            variant="body1"
-            sx={{
-              ml: 2,
-              mt: 1,
-            }}
-          >
-            {line.replace(/^\*\s*/, '').replace(/\*\*/g, '').trim()}
-          </Typography>
-        </>
-        
-
-      );
+    const cleanLine = line.replace(/\\/g, '');
+    if (cleanLine.startsWith('**') && cleanLine.endsWith('**')) {
+      return <Typography key={index} variant="h6" fontWeight="bold" sx={{ mt: 2 }}>{cleanLine.replace(/\*\*/g, '')}</Typography>;
+    } else if (cleanLine.trim().startsWith('*')) {
+      return <Typography key={index} variant="body1" sx={{ ml: 2, mt: 1 }}>{cleanLine.replace(/^\*\s*/, '').replace(/\*\*/g, '').trim()}</Typography>;
     } else {
-      // Render normal text with bold formatting for **text**
-      return (
-        <Typography
-          key={index}
-          variant="body2"
-          sx={{ ml: 4, mt: 0.5 }}
-        >
-        </Typography>
-      );
+      return <Typography key={index} variant="body2" sx={{ ml: 4, mt: 0.5 }}></Typography>;
     }
   });
 
@@ -152,17 +118,13 @@ export default function AnalysisView() {
       <Box sx={{ display: 'flex', height: '100vh' }}>
         {/* Sidebar */}
         <Box sx={{ width: 280, p: 3, bgcolor: darkMode ? '#121212' : '#f0f0f0', borderRight: '1px solid #ccc' }}>
-          <Typography variant="h5" fontWeight="bold" gutterBottom color="primary">
-            📘 Controls
-          </Typography>
+          <Typography variant="h5" fontWeight="bold" gutterBottom color="primary">🟣 AI Menu</Typography>
 
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel>Select Page</InputLabel>
             <Select value={selectedPage} onChange={(e) => setSelectedPage(e.target.value)}>
               {metadata.pages.map((p, idx) => (
-                <MenuItem key={idx} value={idx}>
-                  Page {p.page_number}: {p.page_name}
-                </MenuItem>
+                <MenuItem key={idx} value={idx}>Page {p.page_number}: {p.page_name}</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -196,9 +158,13 @@ export default function AnalysisView() {
 
         {/* Main Content */}
         <Box sx={{ flex: 1, p: 4, overflowY: 'auto' }}>
-          <Typography variant="h4" fontWeight="bold" sx={{ mb: 3 }} color="primary">
-            📊 Report Analysis Dashboard
-          </Typography>
+          <Typography
+  variant="h4"
+  fontWeight="bold"
+  sx={{ mb: 3, color: 'primary.main' }}
+>
+  🟪 Report Analysis Dashboard
+</Typography>
 
           <Typography variant="h6" gutterBottom>
             Page {page.page_number}: {page.page_name} — {page.visuals.length} Visuals
@@ -207,33 +173,51 @@ export default function AnalysisView() {
           <Grid container spacing={2} sx={{ mb: 4 }}>
             {Object.entries(visualTypes).map(([type, visuals], idx) => (
               <Grid item xs={6} sm={4} md={3} lg={2} key={idx}>
-                <Card
-                  sx={{
-                    height: 120,
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    borderRadius: 3,
-                    backgroundColor: darkMode ? '#222' : '#f5f5f5',
-                    overflow: 'hidden',
-                    p: 1
-                  }}
-                  onClick={() => setOpenDialogIndex(type)}
-                >
-                  <Typography variant="body2" fontWeight="bold" noWrap sx={{ maxWidth: '100%' }}>
-                    {type}
-                  </Typography>
-                  <Typography variant="body2">{visuals.length} Visual(s)</Typography>
-                </Card>
+               <Card
+  sx={{
+    height: 130,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    cursor: 'pointer',
+    borderRadius: 3,
+    boxShadow: 3,
+    transition: 'transform 0.2s',
+    '&:hover': {
+      transform: 'scale(1.05)',
+      backgroundColor: darkMode ? '#2a2a2a' : '#f0eaff'
+    }
+  }}
+  onClick={() => setOpenDialogIndex(type)}
+>
+  <CardContent sx={{ textAlign: 'center', p: 1, width: '100%' }}>
+    <Typography
+      variant="body2"
+      fontWeight="bold"
+      noWrap
+      title={type}
+      sx={{
+        fontSize: type.length > 18 ? '0.75rem' : '0.875rem',
+        width: '100%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }}
+    >
+      {cleanVisualType(type)}
+    </Typography>
+    <Typography variant="body2" sx={{ fontSize: '0.75rem' }}>
+      {visuals.length} Visual(s)
+    </Typography>
+  </CardContent>
+</Card>
+
               </Grid>
             ))}
           </Grid>
 
-          {/* Visual Dialogs */}
+          {/* Dialogs */}
           {Object.entries(visualTypes).map(([type, visuals]) => (
             <Dialog
               open={openDialogIndex === type}
@@ -241,7 +225,7 @@ export default function AnalysisView() {
               fullWidth maxWidth="md"
               key={type}
             >
-              <DialogTitle>{type} Visuals ({visuals.length})</DialogTitle>
+              <DialogTitle>{cleanVisualType(type)} Visuals ({visuals.length})</DialogTitle>
               <DialogContent dividers>
                 {visuals.map((v, i) => (
                   <Box key={i} sx={{ mb: 2, px: 2, py: 1, border: '1px solid #ccc', borderRadius: 2, bgcolor: darkMode ? '#1e1e1e' : '#fafafa' }}>
@@ -250,8 +234,7 @@ export default function AnalysisView() {
                     {Object.keys(v.projections).length > 0 && (
                       <Typography sx={{ mt: 1 }}>
                         🎯 <strong>Projections:</strong> {Object.entries(v.projections).map(
-                          ([role, fields]) => `${role}: ${fields.join(', ')}`).join(' | ')
-                        }
+                          ([role, fields]) => `${role}: ${fields.join(', ')}`).join(' | ')}
                       </Typography>
                     )}
                     {v.query_fields.length > 0 && (
@@ -265,7 +248,7 @@ export default function AnalysisView() {
             </Dialog>
           ))}
 
-          {/* Conditional Charts */}
+          {/* Charts */}
           {showCharts && (
             <Grid container spacing={4} sx={{ mt: 1 }} ref={chartRef}>
               <Grid item xs={12} md={6}>
@@ -278,7 +261,7 @@ export default function AnalysisView() {
           )}
 
           {/* AI Suggestions */}
-          {showCharts && showSuggestions && (
+          {showSuggestions && (
             <Card sx={{
               mt: 4,
               bgcolor: darkMode ? '#333' : '#fff8e1',
@@ -287,16 +270,14 @@ export default function AnalysisView() {
               color: darkMode ? '#fff' : '#000'
             }}>
               <CardContent>
-                <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
-                  💡 AI Suggestions
-                </Typography>
+                <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>💡 AI Suggestions</Typography>
                 <Divider sx={{ mb: 1 }} />
-                <Typography>{suggestionsContent}</Typography>
+                <Box>{suggestionsContent}</Box>
               </CardContent>
             </Card>
           )}
 
-          {/* View Layout */}
+          {/* View Layout Button */}
           <Box sx={{ textAlign: 'center', mt: 4 }}>
             <Button
               variant="outlined"
