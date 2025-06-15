@@ -1,0 +1,15 @@
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+  
+  /* For Firefox */
+  * {
+    scrollbar-width: none; /* Hides the scrollbar */
+  }
+  
+  /* Ensure the content is still scrollable */
+  * {
+    -ms-overflow-style: none; /* Hides scrollbar for Internet Explorer and Edge */
+    overflow: -moz-scrollbars-none; /* Hides scrollbar for older Firefox versions */
+  }
