@@ -102,6 +102,50 @@ export default function AnalysisView() {
   const sortedColumns = Object.entries(columnUsage).sort((a, b) => b[1] - a[1]);
   const mostUsed = sortedColumns.slice(0, 5).map(([col, count]) => ({ col, count }));
   const leastUsed = sortedColumns.slice(-5).map(([col, count]) => ({ col, count }));
+  const suggestionsContent = metadata.suggestions.split('\n').map((line, index) => {
+    if (line.startsWith('**') && line.endsWith('**')) {
+      // Render main heading
+      return (
+        <Typography
+          key={index}
+          variant="h6"
+          fontWeight="bold"
+          sx={{ mt: 2 }}
+        >
+          {line.replace(/\*\*/g, '')}
+        </Typography>
+      );
+    } else if (line.trim().startsWith('*')) {
+      // Render subheading (bold and underlined)
+      
+      return (
+        <>
+          <Typography
+            key={index}
+            variant="body1"
+            sx={{
+              ml: 2,
+              mt: 1,
+            }}
+          >
+            {line.replace(/^\*\s*/, '').replace(/\*\*/g, '').trim()}
+          </Typography>
+        </>
+        
+
+      );
+    } else {
+      // Render normal text with bold formatting for **text**
+      return (
+        <Typography
+          key={index}
+          variant="body2"
+          sx={{ ml: 4, mt: 0.5 }}
+        >
+        </Typography>
+      );
+    }
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -267,7 +311,7 @@ export default function AnalysisView() {
                 💡 AI Suggestions
               </Typography>
               <Divider sx={{ mb: 1 }} />
-              <Typography>{metadata.suggestions?.replace(/\*/g, '')}</Typography>
+              <Typography>{suggestionsContent}</Typography>
             </CardContent>
           </Card>
         )}

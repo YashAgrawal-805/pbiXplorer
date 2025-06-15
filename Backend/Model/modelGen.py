@@ -5,7 +5,9 @@ import os
 
 load_dotenv()
 api_key = os.getenv("API_KEY")
+
 client = genai.Client(api_key=api_key)
+
 def process_json_data(json_data):
     """
     Function to process JSON data using the Google GenAI API.
@@ -13,7 +15,7 @@ def process_json_data(json_data):
     try:
         # Convert JSON data to a string
         json_data_str = json.dumps(json_data, indent=4)
-        print("JSON Data:" + json_data_str)
+        print("JSON Data:")
 
         # Generate content using the GenAI API
         response = client.models.generate_content(
@@ -24,9 +26,6 @@ def process_json_data(json_data):
             )
         )
 
-        # Print the response from the API
-        print("API Response:")
-        print(response.text)
 
         # Optionally, return the response for further use
         return response.text
