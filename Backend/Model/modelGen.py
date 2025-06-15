@@ -28,6 +28,7 @@ def process_json_data(json_data):
             "- GUI (graphical user interface) improvements\n"
             "- How to speed up the report\n"
             "- The **best layout recommendation**: suggest how visual elements like charts, slicers, tables, etc., should be arranged (e.g., filters on left, KPIs on top, breakdowns below).\n"
+            "-Remove example layout in the UI"
             "Be specific to the structure in the JSON only. Keep the output short, readable, and structured.\n"
             "JSON Input:\n" + json_data_str
         )
