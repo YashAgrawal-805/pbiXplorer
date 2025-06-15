@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 from Extractor.extractLayout import extract_layout_from_pbix
 from Visuals.visualExtractor import visual_extractor
-from Model.modelGen import process_json_data
+from Model.modelGen import process_json_data, optimal_layout_data
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
@@ -47,8 +47,10 @@ def upload_file():
             return jsonify({"message": "Failed to extract visuals from layout data"}), 400
         
         suggestions = process_json_data(report_metadata)
+        optimalLayout = optimal_layout_data(report_metadata)
 
         report_metadata['suggestions'] = suggestions
+        report_metadata['optimal_layout'] = optimalLayout
 
         return jsonify({"message": "File processed successfully", "report_metadata": report_metadata}), 200
 

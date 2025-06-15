@@ -17,7 +17,7 @@ def process_json_data(json_data):
     try:
         # Convert JSON data to a formatted string
         json_data_str = json.dumps(json_data, indent=4)
-        print("JSON Data:" + json_data_str)
+        print("JSON Data:")
 
         # Build a detailed and targeted prompt
         prompt = (
@@ -27,8 +27,7 @@ def process_json_data(json_data):
             "- Which columns can be ignored\n"
             "- GUI (graphical user interface) improvements\n"
             "- How to speed up the report\n"
-            "- The **best layout recommendation**: suggest how visual elements like charts, slicers, tables, etc., should be arranged (e.g., filters on left, KPIs on top, breakdowns below).\n"
-            "Be specific to the structure in the JSON only. Keep the output short, readable, and structured.\n"
+            "- Be specific to the structure in the JSON only. Keep the output short, readable, and structured.\n"
             "JSON Input:\n" + json_data_str
         )
 
@@ -40,10 +39,31 @@ def process_json_data(json_data):
 
         # Print and return the response from the API
         print("API Response:")
-        print(response.text)
 
         # Optionally, return the response for further use
         return response.text
 
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def optimal_layout_data(json_data):
+    try:
+        # Convert JSON data to a formatted string
+        json_data_str = json.dumps(json_data, indent=4)
+        print("JSON Data:")
+
+        prompt = ("Be specific to the structure in the JSON only. Give the o/p of modified x axis y axis and page_length, page_width in the same format as given(pages must exist completely), also keep visual type and visual number in input for ui improvement and so as they may not overlap when needed\n"
+        "You are a Power BI optimization assistant.\n"
+        "MAKE SURE TO RESULT IN EXACT SAME FORMAT AS JSON PROVIDED REMOVE Projections and query_fields\n"
+            "JSON Input:\n" + json_data_str
+        )
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt
+        )
+        print(response.text)
+
+        return response.text
+    
     except Exception as e:
         print(f"An error occurred: {e}")

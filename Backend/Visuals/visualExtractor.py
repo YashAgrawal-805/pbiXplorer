@@ -10,7 +10,8 @@ def visual_extractor(layout_data):
         "theme": "Unknown",
         "version": "Unknown",
         "pages": [],
-        "suggestions": "Unknown"
+        "suggestions": "Unknown",
+        "optimal_layout": "Unknown"
     }
 
     # Extract report theme and version
